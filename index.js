@@ -87,7 +87,7 @@ client.on('interactionCreate', async interaction => {
     const embed = new EmbedBuilder()
       .setColor('Green')
       .setDescription(
-`⬆️ **TEAM UPRANK** ⬆️
+`⬆ :StaffBadge: **TEAM UPRANK** ⬆ :StaffBadge:
 
 **Wer:** ${user}
 **Grund:** ${grund}
