@@ -43,10 +43,24 @@ client.once('ready', async () => {
     .addStringOption(o => o.setName('grund').setDescription('Grund').setRequired(true)),
 
   new SlashCommandBuilder()
-    .setName('say')
-    .setDescription('Sendet eine Nachricht über den Bot')
-    .addChannelOption(o => o.setName('kanal').setDescription('Zielkanal').setRequired(true))
-    .addStringOption(o => o.setName('nachricht').setDescription('Die Nachricht').setRequired(true))
+  .setName('nordstern_news')
+  .setDescription('Sendet eine Nordstern TV News')
+  .addChannelOption(o =>
+    o.setName('kanal')
+      .setDescription('In welchen Kanal?')
+      .setRequired(true))
+  .addRoleOption(o =>
+    o.setName('ping')
+      .setDescription('Welche Rolle soll gepingt werden?')
+      .setRequired(true))
+  .addStringOption(o =>
+    o.setName('titel')
+      .setDescription('Titel der News')
+      .setRequired(true))
+  .addStringOption(o =>
+    o.setName('nachricht')
+      .setDescription('Die Nachricht')
+      .setRequired(true))
 ].map(c => c.toJSON());
 
   const rest = new REST({ version: '10' }).setToken(TOKEN);
@@ -77,7 +91,9 @@ client.on('interactionCreate', async interaction => {
 let member = null;
 let grund = null;
 
-if (interaction.commandName !== 'say') {
+if (
+  interaction.commandName !== 'nordstern_news'
+) {
   user = interaction.options.getUser('user');
   member = await interaction.guild.members.fetch(user.id);
   grund = interaction.options.getString('grund');
@@ -151,14 +167,25 @@ ${interaction.user}`
     return interaction.reply({ embeds: [embed] });
   }
 
-  if (interaction.commandName === 'say') {
-    const kanal = interaction.options.getChannel('kanal');
-    const nachricht = interaction.options.getString('nachricht');
+if (interaction.commandName === 'nordstern_news') {
 
-    await kanal.send(nachricht);
+  const kanal = interaction.options.getChannel('kanal');
+  const ping = interaction.options.getRole('ping');
+  const titel = interaction.options.getString('titel');
+  const nachricht = interaction.options.getString('nachricht');
+
+  const embed = new EmbedBuilder()
+    .setColor('Blue')
+    .setTitle(`📰 ${titel}`)
+    .setDescription(nachricht);
+
+  await kanal.send({
+    content: `${ping}`,
+    embeds: [embed]
+  });
 
   return interaction.reply({
-    content: `✅ Nachricht wurde in ${kanal} gesendet.`,
+    content: '✅ Nordstern News wurde gesendet!',
     ephemeral: true
   });
 }
