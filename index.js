@@ -73,9 +73,15 @@ client.on('interactionCreate', async interaction => {
     });
   }
 
-  const user = interaction.options.getUser('user');
-  const member = await interaction.guild.members.fetch(user.id);
-  const grund = interaction.options.getString('grund');
+ let user = null;
+let member = null;
+let grund = null;
+
+if (interaction.commandName !== 'say') {
+  user = interaction.options.getUser('user');
+  member = await interaction.guild.members.fetch(user.id);
+  grund = interaction.options.getString('grund');
+}
 
   if (interaction.commandName === 'uprank') {
     const von = interaction.options.getRole('von');
