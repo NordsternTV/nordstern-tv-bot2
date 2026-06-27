@@ -87,7 +87,7 @@ client.on('interactionCreate', async interaction => {
     const embed = new EmbedBuilder()
       .setColor('Green')
       .setDescription(
-`⬆⬆️ **TEAM UPRANK** ⬆️⬆ 
+`⬆️**TEAM UPRANK**⬆️
 
 **Wer:** ${user}
 **Grund:** ${grund}
@@ -113,7 +113,7 @@ ${interaction.user}`
     const embed = new EmbedBuilder()
       .setColor('Red')
       .setDescription(
-`⬇️ **TEAM DOWNRANK** ⬇️
+`⬇️**TEAM DOWNRANK**⬇️
 
 **Wer:** ${user}
 **Grund:** ${grund}
