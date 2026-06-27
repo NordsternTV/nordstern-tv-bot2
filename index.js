@@ -20,28 +20,34 @@ client.once('ready', async () => {
   console.log(`${client.user.tag} ist online!`);
 
   const commands = [
-    new SlashCommandBuilder()
-      .setName('uprank')
-      .setDescription('Team Uprank')
-      .addUserOption(o => o.setName('user').setDescription('Wer?').setRequired(true))
-      .addRoleOption(o => o.setName('von').setDescription('Von Rolle').setRequired(true))
-      .addRoleOption(o => o.setName('auf').setDescription('Auf Rolle').setRequired(true))
-      .addStringOption(o => o.setName('grund').setDescription('Grund').setRequired(true)),
+  new SlashCommandBuilder()
+    .setName('uprank')
+    .setDescription('Team Uprank')
+    .addUserOption(o => o.setName('user').setDescription('Wer?').setRequired(true))
+    .addRoleOption(o => o.setName('von').setDescription('Von Rolle').setRequired(true))
+    .addRoleOption(o => o.setName('auf').setDescription('Auf Rolle').setRequired(true))
+    .addStringOption(o => o.setName('grund').setDescription('Grund').setRequired(true)),
 
-    new SlashCommandBuilder()
-      .setName('downrank')
-      .setDescription('Team Downrank')
-      .addUserOption(o => o.setName('user').setDescription('Wer?').setRequired(true))
-      .addRoleOption(o => o.setName('von').setDescription('Von Rolle').setRequired(true))
-      .addRoleOption(o => o.setName('auf').setDescription('Auf Rolle').setRequired(true))
-      .addStringOption(o => o.setName('grund').setDescription('Grund').setRequired(true)),
+  new SlashCommandBuilder()
+    .setName('downrank')
+    .setDescription('Team Downrank')
+    .addUserOption(o => o.setName('user').setDescription('Wer?').setRequired(true))
+    .addRoleOption(o => o.setName('von').setDescription('Von Rolle').setRequired(true))
+    .addRoleOption(o => o.setName('auf').setDescription('Auf Rolle').setRequired(true))
+    .addStringOption(o => o.setName('grund').setDescription('Grund').setRequired(true)),
 
-    new SlashCommandBuilder()
-      .setName('warn')
-      .setDescription('Team Warn')
-      .addUserOption(o => o.setName('user').setDescription('Wer?').setRequired(true))
-      .addStringOption(o => o.setName('grund').setDescription('Grund').setRequired(true))
-  ].map(c => c.toJSON());
+  new SlashCommandBuilder()
+    .setName('warn')
+    .setDescription('Team Warn')
+    .addUserOption(o => o.setName('user').setDescription('Wer?').setRequired(true))
+    .addStringOption(o => o.setName('grund').setDescription('Grund').setRequired(true)),
+
+  new SlashCommandBuilder()
+    .setName('say')
+    .setDescription('Sendet eine Nachricht über den Bot')
+    .addChannelOption(o => o.setName('kanal').setDescription('Zielkanal').setRequired(true))
+    .addStringOption(o => o.setName('nachricht').setDescription('Die Nachricht').setRequired(true))
+].map(c => c.toJSON());
 
   const rest = new REST({ version: '10' }).setToken(TOKEN);
 
@@ -122,7 +128,6 @@ ${interaction.user}`
 
     return interaction.reply({ embeds: [embed] });
   }
-
   if (interaction.commandName === 'warn') {
     const embed = new EmbedBuilder()
       .setColor('Orange')
@@ -139,6 +144,18 @@ ${interaction.user}`
 
     return interaction.reply({ embeds: [embed] });
   }
-});
 
+  if (interaction.commandName === 'say') {
+    const kanal = interaction.options.getChannel('kanal');
+    const nachricht = interaction.options.getString('nachricht');
+
+    await kanal.send(nachricht);
+
+  return interaction.reply({
+    content: `✅ Nachricht wurde in ${kanal} gesendet.`,
+    ephemeral: true
+  });
+}
+
+});
 client.login(TOKEN);
