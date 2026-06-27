@@ -160,13 +160,6 @@ ${interaction.user}`
 **Grund:** ${grund}
 
 **Verwarnt von:**
-${interaction.user}`
-      )
-      .setTimestamp();
-
-    return interaction.reply({ embeds: [embed] });
-  }
-
 if (interaction.commandName === 'nordstern_news') {
 
   const kanal = interaction.options.getChannel('kanal');
@@ -174,15 +167,13 @@ if (interaction.commandName === 'nordstern_news') {
   const titel = interaction.options.getString('titel');
   const nachricht = interaction.options.getString('nachricht');
 
-  const embed = new EmbedBuilder()
-    .setColor('Blue')
-    .setTitle(`📰 ${titel}`)
-    .setDescription(nachricht);
+  await kanal.send(
+`${ping}
 
-  await kanal.send({
-    content: `${ping}`,
-    embeds: [embed]
-  });
+📰 ${titel}
+
+${nachricht}`
+  );
 
   return interaction.reply({
     content: '✅ Nordstern News wurde gesendet!',
