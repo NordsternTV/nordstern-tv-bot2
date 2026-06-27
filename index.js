@@ -87,17 +87,29 @@ client.on('interactionCreate', async interaction => {
     });
   }
 
- let user = null;
-let member = null;
-let grund = null;
+  if (interaction.commandName === 'nordstern_news') {
+    const kanal = interaction.options.getChannel('kanal');
+    const ping = interaction.options.getRole('ping');
+    const titel = interaction.options.getString('titel');
+    const nachricht = interaction.options.getString('nachricht');
 
-if (
-  interaction.commandName !== 'nordstern_news'
-) {
-  user = interaction.options.getUser('user');
-  member = await interaction.guild.members.fetch(user.id);
-  grund = interaction.options.getString('grund');
-}
+    await kanal.send(
+`${ping}
+
+📰 ${titel}
+
+${nachricht}`
+    );
+
+    return interaction.reply({
+      content: '✅ Nordstern News wurde gesendet!',
+      ephemeral: true
+    });
+  }
+
+  const user = interaction.options.getUser('user');
+  const member = await interaction.guild.members.fetch(user.id);
+  const grund = interaction.options.getString('grund');
 
   if (interaction.commandName === 'uprank') {
     const von = interaction.options.getRole('von');
@@ -109,7 +121,7 @@ if (
     const embed = new EmbedBuilder()
       .setColor('Green')
       .setDescription(
-`⬆️**TEAM UPRANK**⬆️
+`⬆️ **TEAM UPRANK** ⬆️
 
 **Wer:** ${user}
 **Grund:** ${grund}
@@ -135,7 +147,7 @@ ${interaction.user}`
     const embed = new EmbedBuilder()
       .setColor('Red')
       .setDescription(
-`⬇️**TEAM DOWNRANK**⬇️
+`⬇️ **TEAM DOWNRANK** ⬇️
 
 **Wer:** ${user}
 **Grund:** ${grund}
@@ -150,6 +162,7 @@ ${interaction.user}`
 
     return interaction.reply({ embeds: [embed] });
   }
+
   if (interaction.commandName === 'warn') {
     const embed = new EmbedBuilder()
       .setColor('Orange')
@@ -160,26 +173,12 @@ ${interaction.user}`
 **Grund:** ${grund}
 
 **Verwarnt von:**
-if (interaction.commandName === 'nordstern_news') {
+${interaction.user}`
+      )
+      .setTimestamp();
 
-  const kanal = interaction.options.getChannel('kanal');
-  const ping = interaction.options.getRole('ping');
-  const titel = interaction.options.getString('titel');
-  const nachricht = interaction.options.getString('nachricht');
-
-  await kanal.send(
-`${ping}
-
-📰 ${titel}
-
-${nachricht}`
-  );
-
-  return interaction.reply({
-    content: '✅ Nordstern News wurde gesendet!',
-    ephemeral: true
-  });
-}
-
+    return interaction.reply({ embeds: [embed] });
+  }
 });
+
 client.login(TOKEN);
