@@ -178,18 +178,14 @@ await member.roles.add(auf);
 await updateNickname(member);
 
     const embed = new EmbedBuilder()
-  .setColor('Green')
-  .setDescription(
-`⬆️ **TEAM UPRANK** ⬆️
-
-**Wer:** ${user}
-**Grund:** ${grund}
-
-**Von:** ${von}
-**Auf:** ${auf}
-
-**Hauptunterzeichner:**
-${hauptunterzeichner}`
+  .setColor("#57F287")
+  .setTitle("⬆️ Team Uprank")
+  .addFields(
+    { name: "👤 Mitglied", value: `${user}`, inline: false },
+    { name: "📌 Von", value: `${von}`, inline: true },
+    { name: "🆕 Auf", value: `${auf}`, inline: true },
+    { name: "📄 Grund", value: grund, inline: false },
+    { name: "✍️ Hauptunterzeichner", value: hauptunterzeichner, inline: false }
   )
   .setTimestamp();
 
@@ -205,20 +201,16 @@ await member.roles.add(auf);
 await updateNickname(member);
 
     const embed = new EmbedBuilder()
-      .setColor('Red')
-      .setDescription(
-`⬇️ **TEAM DOWNRANK** ⬇️
-
-**Wer:** ${user}
-**Grund:** ${grund}
-
-**Von:** ${von}
-**Auf:** ${auf}
-
-**Hauptunterzeichner:**
-${hauptunterzeichner}`
-      )
-      .setTimestamp();
+  .setColor("#ED4245")
+  .setTitle("⬇️ Team Downrank")
+  .addFields(
+    { name: "👤 Mitglied", value: `${user}`, inline: false },
+    { name: "📌 Von", value: `${von}`, inline: true },
+    { name: "🆕 Auf", value: `${auf}`, inline: true },
+    { name: "📄 Grund", value: grund, inline: false },
+    { name: "✍️ Hauptunterzeichner", value: hauptunterzeichner, inline: false }
+  )
+  .setTimestamp();
 
     return interaction.reply({ embeds: [embed] });
   }
