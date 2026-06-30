@@ -36,8 +36,8 @@ async function updateNickname(member, rolle) {
   if (!NICKNAME_ROLLEN.includes(rolle.id)) return;
 
   const cleanName = cleanNickname(member.displayName);
-
-  await member.setNickname(`${rolle.name} | ${cleanName}`);
+  const nickname = `${rolle.name} | ${cleanName}`.substring(0, 32);
+await member.setNickname(nickname);
 }
 
 const client = new Client({
