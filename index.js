@@ -182,8 +182,8 @@ await updateNickname(member);
   .setTitle("⬆️ Team Uprank")
   .addFields(
     { name: "👤 Mitglied", value: `${user}`, inline: false },
-    { name: "📌 Von", value: `${von}`, inline: true },
-    { name: "🆕 Auf", value: `${auf}`, inline: true },
+    { name: "📌 Von", value: `${von}`, inline: false },
+    { name: "🆕 Auf", value: `${auf}`, inline: false },
     { name: "📄 Grund", value: grund, inline: false },
     { name: "✍️ Hauptunterzeichner", value: hauptunterzeichner, inline: false }
   )
@@ -205,8 +205,8 @@ await updateNickname(member);
   .setTitle("⬇️ Team Downrank")
   .addFields(
     { name: "👤 Mitglied", value: `${user}`, inline: false },
-    { name: "📌 Von", value: `${von}`, inline: true },
-    { name: "🆕 Auf", value: `${auf}`, inline: true },
+    { name: "📌 Von", value: `${von}`, inline: false },
+    { name: "🆕 Auf", value: `${auf}`, inline: false },
     { name: "📄 Grund", value: grund, inline: false },
     { name: "✍️ Hauptunterzeichner", value: hauptunterzeichner, inline: false }
   )
