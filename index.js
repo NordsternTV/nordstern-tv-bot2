@@ -48,7 +48,10 @@ const nickname = `${rollenName} | ${cleanName}`.substring(0, 32);
 }
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers
+  ]
 });
 
 client.once('ready', async () => {
@@ -237,5 +240,12 @@ ${interaction.user}`
     return interaction.reply({ embeds: [embed] });
   }
 });
+client.on('guildMemberUpdate', async (oldMember, newMember) => {
+  const alteRollen = oldMember.roles.cache.map(r => r.id).join(',');
+  const neueRollen = newMember.roles.cache.map(r => r.id).join(',');
 
+  if (alteRollen === neueRollen) return;
+
+  await updateNickname(newMember);
+});
 client.login(TOKEN);
