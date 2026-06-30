@@ -33,9 +33,12 @@ function cleanNickname(name) {
 }
 
 async function updateNickname(member) {
-  const rolle = member.roles.highest;
+  const rolle = member.roles.cache
+  .filter(r => NICKNAME_ROLLEN.includes(r.id))
+  .sort((a, b) => b.position - a.position)
+  .first();
 
-  if (!NICKNAME_ROLLEN.includes(rolle.id)) return;
+  if (!rolle) return;
 
   const cleanName = member.user.globalName || member.user.username;
   const nickname = `${rolle.name} | ${cleanName}`.substring(0, 32);
