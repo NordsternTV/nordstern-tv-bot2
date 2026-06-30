@@ -32,14 +32,10 @@ function cleanNickname(name) {
   return name.replace(/^.*?\s\|\s/, "");
 }
 
-async function updateNickname(member) {
+async function updateNickname(member, rolle) {
+  if (!NICKNAME_ROLLEN.includes(rolle.id)) return;
+
   const cleanName = cleanNickname(member.displayName);
-
-  const rolle = member.roles.cache.find(r =>
-    NICKNAME_ROLLEN.includes(r.id)
-  );
-
-  if (!rolle) return;
 
   await member.setNickname(`${rolle.name} | ${cleanName}`);
 }
@@ -169,7 +165,7 @@ const hauptunterzeichner = [haupt1, haupt2, haupt3]
 
   await member.roles.remove(von);
 await member.roles.add(auf);
-await updateNickname(member);
+await updateNickname(member, auf);
 
     const embed = new EmbedBuilder()
   .setColor('Green')
@@ -196,7 +192,7 @@ return interaction.reply({ embeds: [embed] });
 
     await member.roles.remove(von);
 await member.roles.add(auf);
-await updateNickname(member);
+await updateNickname(member, auf);
 
     const embed = new EmbedBuilder()
       .setColor('Red')
