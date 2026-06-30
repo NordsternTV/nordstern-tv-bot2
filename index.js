@@ -13,6 +13,37 @@ const GUILD_ID = "1518981818387271740";
 const LEITUNGSEBENE_ID = "1519202322281136188";
 const PERSONALVERWALTUNG_ID = "1520475934338187376";
 
+// HIER EINFÜGEN (ab Zeile 15)
+
+const NICKNAME_ROLLEN = [
+  "1519213027403104308",
+  "1521179512623071252",
+  "1519205278778789941",
+  "1519205125179179088",
+  "1519203806976409781",
+  "1519203661165625426",
+  "1519203392134713355",
+  "1519202922930503741",
+  "1519202598836768769",
+  "1519208055219294239"
+];
+
+function cleanNickname(name) {
+  return name.replace(/^.*?\s\|\s/, "");
+}
+
+async function updateNickname(member) {
+  const cleanName = cleanNickname(member.displayName);
+
+  const rolle = member.roles.cache.find(r =>
+    NICKNAME_ROLLEN.includes(r.id)
+  );
+
+  if (!rolle) return;
+
+  await member.setNickname(`${rolle.name} | ${cleanName}`);
+}
+
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
@@ -136,12 +167,13 @@ const hauptunterzeichner = [haupt1, haupt2, haupt3]
     const von = interaction.options.getRole('von');
     const auf = interaction.options.getRole('auf');
 
-    await member.roles.remove(von);
-    await member.roles.add(auf);
+  await member.roles.remove(von);
+await member.roles.add(auf);
+await updateNickname(member);
 
     const embed = new EmbedBuilder()
-      .setColor('Green')
-      .setDescription(
+  .setColor('Green')
+  .setDescription(
 `⬆️ **TEAM UPRANK** ⬆️
 
 **Wer:** ${user}
@@ -149,12 +181,13 @@ const hauptunterzeichner = [haupt1, haupt2, haupt3]
 
 **Von:** ${von}
 **Auf:** ${auf}
+
 **Hauptunterzeichner:**
 ${hauptunterzeichner}`
-      )
-      .setTimestamp();
+  )
+  .setTimestamp();
 
-    return interaction.reply({ embeds: [embed] });
+return interaction.reply({ embeds: [embed] });
   }
 
   if (interaction.commandName === 'downrank') {
@@ -162,7 +195,8 @@ ${hauptunterzeichner}`
     const auf = interaction.options.getRole('auf');
 
     await member.roles.remove(von);
-    await member.roles.add(auf);
+await member.roles.add(auf);
+await updateNickname(member);
 
     const embed = new EmbedBuilder()
       .setColor('Red')
@@ -176,7 +210,7 @@ ${hauptunterzeichner}`
 **Auf:** ${auf}
 
 **Hauptunterzeichner:**
-${hauptunterzeichner}
+${hauptunterzeichner}`
       )
       .setTimestamp();
 
@@ -185,17 +219,17 @@ ${hauptunterzeichner}
 
   if (interaction.commandName === 'warn') {
     const embed = new EmbedBuilder()
-      .setColor('Orange')
-      .setDescription(
-⚠️ **TEAM WARN** ⚠️
+  .setColor('Orange')
+  .setDescription(
+`⚠️ **TEAM WARN** ⚠️
 
 **Wer:** ${user}
 **Grund:** ${grund}
 
 **Verwarnt von:**
 ${interaction.user}`
-      )
-      .setTimestamp();
+  )
+  .setTimestamp();
 
     return interaction.reply({ embeds: [embed] });
   }
