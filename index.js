@@ -15,18 +15,18 @@ const PERSONALVERWALTUNG_ID = "1520475934338187376";
 
 // HIER EINFÜGEN (ab Zeile 15)
 
-const NICKNAME_ROLLEN = [
-  "1519213027403104308",
-  "1521179512623071252",
-  "1519205278778789941",
-  "1519205125179179088",
-  "1519203806976409781",
-  "1519203661165625426",
-  "1519203392134713355",
-  "1519202922930503741",
-  "1519202598836768769",
-  "1519208055219294239"
-];
+const NICKNAME_ROLLEN = {
+  "1519213027403104308": "Bürger",
+  "1521179512623071252": "Pressesprecher",
+  "1519205278778789941": "Security",
+  "1519205125179179088": "Security Leitung",
+  "1519203806976409781": "Reporter",
+  "1519203661165625426": "Reporter Leitung",
+  "1519203392134713355": "Kamerateam",
+  "1519202922930503741": "Kamera Leitung",
+  "1519202598836768769": "Stv. Inhaber",
+  "1519208055219294239": "Inhaber"
+};
 
 function cleanNickname(name) {
   return name.replace(/^.*?\s\|\s/, "");
@@ -34,14 +34,15 @@ function cleanNickname(name) {
 
 async function updateNickname(member) {
   const rolle = member.roles.cache
-  .filter(r => NICKNAME_ROLLEN.includes(r.id))
+  .filter(r => NICKNAME_ROLLEN[r.id])
   .sort((a, b) => b.position - a.position)
   .first();
 
   if (!rolle) return;
 
-  const cleanName = member.user.globalName || member.user.username;
-  const nickname = `${rolle.name} | ${cleanName}`.substring(0, 32);
+  const cleanName = cleanNickname(member.displayName);
+  const rollenName = NICKNAME_ROLLEN[rolle.id];
+const nickname = `${rollenName} | ${cleanName}`.substring(0, 32);
 
   await member.setNickname(nickname);
 }
